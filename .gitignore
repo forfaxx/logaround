@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Editor and IDE settings
+*.swp
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and test output
+*.log
+*.out
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Local data / cache
+.cache/
+*.sqlite3
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Test artifacts
+*.tmp
+*.bak
+*.old
+
+# Custom: ignore local log exports and debug runs
+logaround-output*.txt
+logaround-debug*.txt
+
