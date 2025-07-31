@@ -149,7 +149,7 @@ def main():
         add_help=False
     )
     parser.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
-    parser.add_argument('-v', '--version', action='version', version='logaround.py 1.0.0')
+    parser.add_argument('-v', '--version', action='version', version='logaround.py 1.1.0')
     parser.add_argument('--since', type=str, default=None, help='Start time for journalctl (e.g. "2024-07-29 00:00", "last tuesday 14:00"). Supports fuzzy times.')
     parser.add_argument('--until', type=str, default=None, help='End time for journalctl (e.g. "today 14:00", "2 days ago 17:30").')
     parser.add_argument('--term', type=str, action='append', help='Search term. Use multiple times for AND search (e.g. --term ssh --term fail).')
