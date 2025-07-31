@@ -7,13 +7,19 @@ Color highlighting, instant context, human time formats, and powerful filtering�
 
 ## Features
 
-- 🕵️ **Search by Text or Time:** Jump straight to any log message or timestamp.
-- 🎨 **Color Highlighting:** Instantly spot matches in busy logs.
-- 🕓 **Human Time Support:** Use `"last Tuesday 14:00"`, `"yesterday"`, `"2 days ago 11:30"`, etc.
-- 🧭 **Context-Aware:** Get N lines before/after every match—like `grep -A/-B`, but smarter.
-- 🐍 **Pandas DataFrame Under the Hood:** Hackable, extendable, perfect for power users.
-- 🚦 **Never Drops Lines:** Even weird or multi-line log messages are kept.
-- 🐧 **Zero Dependencies Except Rich, Pandas, and GNU date.**
+- **Search by Text or Time:** Jump straight to any log message or timestamp.
+- **Color Highlighting:** Instantly spot matches in busy logs.
+- **Human Time Support:** Use `"last Tuesday 14:00"`, `"yesterday"`, `"2 days ago 11:30"`, etc.
+- **Context-Aware:** Get N lines before/after every match—like `grep -A/-B`, but smarter.
+- **Pandas DataFrame Under the Hood:** Hackable, extendable, perfect for power users.
+- **Never Drops Lines:** Even weird or multi-line log messages are kept.
+- **Zero Dependencies Except Rich, Pandas, and GNU date.**
+
+
+---
+
+![logaround screenshot](logaround.jpg)
+
 
 ---
 
