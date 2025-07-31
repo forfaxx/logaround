@@ -62,7 +62,7 @@ def parse_journalctl_output(output):
     If a line can't be parsed, put the whole thing in 'message' and leave other fields blank.
     This ensures output never drops lines due to format.
     """
-    regex = r'(?P<timestamp>\w{3} +\d{1,2} +\d{2}:\d{2}:\d{2}) (?P<host>\S+) (?P<unit>[^\[]+)\[(\d+)\]: (?P<message>.*)'
+    regex = r'(?P<timestamp>\w{3} +\d{1,2} +\d{2}:\d{2}:\d{2}) (?P<host>\S+) (?P<unit>[^:\[]+)(?:\[\d+\])?: (?P<message>.*)'
     rows = []
     for line in output.splitlines():
         match = re.match(regex, line)
@@ -76,7 +76,7 @@ def parse_journalctl_output(output):
                 'unit': '',
                 'message': line
             }
-        rows.append(data)
+        rows.append({k: v.strip() for k, v in data.items()})
     return pd.DataFrame(rows)
 
 def highlight_message(msg, terms):
@@ -131,14 +131,31 @@ def print_table(df, terms, max_rows=100):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Search system logs with flexible time and term filters. Highlights results in color."
+        prog="logaround.py",
+        description=(
+            "Search and highlight system logs using journalctl and pandas.\n\n"
+            "Flexible, human-friendly search for systemd logs by date/time and ANDed terms.\n"
+            "Matches are highlighted in color, and output is shown in a pretty terminal table.\n"
+            "Supports fuzzy --since/--until (e.g. 'yesterday 15:00', '1 hour ago').\n"
+            "\n"
+            "Examples:\n"
+            "  logaround.py --term fail\n"
+            "  logaround.py --since '2 hours ago' --term error --term sshd\n"
+            "  logaround.py --since yesterday --until now --term reboot --delta 2\n"
+            "\n"
+            "If no search terms are given, the most recent logs are shown."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        add_help=False
     )
-    parser.add_argument('--since', type=str, default=None, help='Start time (e.g. "2024-07-29 00:00" or "last tuesday 14:00")')
-    parser.add_argument('--until', type=str, default=None, help='End time (e.g. "today 14:00" or "2 days ago 17:30")')
-    parser.add_argument('--term', type=str, action='append', help='Search term (use multiple times for AND search)')
-    parser.add_argument('--lines', type=int, default=500, help='How many lines to fetch if not filtering by time')
-    parser.add_argument('--max', type=int, default=100, help='Max number of results to display')
-    parser.add_argument('--delta', type=int, default=0, help='Show ±N context lines before/after matches')
+    parser.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
+    parser.add_argument('-v', '--version', action='version', version='logaround.py 1.0.0')
+    parser.add_argument('--since', type=str, default=None, help='Start time for journalctl (e.g. "2024-07-29 00:00", "last tuesday 14:00"). Supports fuzzy times.')
+    parser.add_argument('--until', type=str, default=None, help='End time for journalctl (e.g. "today 14:00", "2 days ago 17:30").')
+    parser.add_argument('--term', type=str, action='append', help='Search term. Use multiple times for AND search (e.g. --term ssh --term fail).')
+    parser.add_argument('--lines', type=int, default=500, help='How many lines to fetch if not filtering by time. Default: 500.')
+    parser.add_argument('--max', type=int, default=100, help='Maximum number of rows to display. Default: 100.')
+    parser.add_argument('--delta', type=int, default=0, help='Show ±N context lines before/after each match. Default: 0 (no context).')
     args = parser.parse_args()
 
     # Convert any fuzzy times to ISO 8601 for journalctl (GNU date parsing)
